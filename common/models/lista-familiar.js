@@ -7,9 +7,25 @@ module.exports = function(Listafamiliar) {
         next();
     });
     
-    /*Listafamiliar.afterRemote('find', function (context, listaFamiliar, next) {
-          var 
+    Listafamiliar.afterRemote('find', function (context, listaFamiliar, next) {
+        var app = Usuario.app;       //esta lista cual de ellas??
+        var Usuario = app.models.Usuario; // models.Usuario nose de donde sale??
+        
+        //obtener el id de la lista k se ha guardado arriba 
+          var idLista = Listafamiliar.id;
+        
+        //buscar los datos del usuario autenticado
+            Usuario.findById({
+                //context.req.accessToken.userId;
+            }, function(err, rolemapping) {
+                if (err) next(err);
+                next();
+            })
+            
+        //asignar al campo listafamiliarId el id de la lista que se acaba de crear
+            Usuario.listaFamiliar.id = idLista;
+          
         next();
-    });*/
+    });
     
 };
