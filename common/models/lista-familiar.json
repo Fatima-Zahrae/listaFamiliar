@@ -47,7 +47,43 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "create"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "solicitar"
     }
   ],
-  "methods": {}
+  "methods": {
+    "prototype.solicitar": {
+      "accepts": [
+        {
+          "arg": "contexto",
+          "type": "object",
+          "required": true,
+          "description": "el argumento del context",
+          "http": {
+            "source": "context"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "solicitud",
+          "type": "object",
+          "root": true,
+          "description": "para devolver el id de usuario y el d de la lista asociada"
+        }
+      ],
+      "description": "metodo remoto para crear las solicitudes",
+      "http": [
+        {
+          "path": "/solicitar",
+          "verb": "post"
+        }
+      ]
+    }
+  }
 }

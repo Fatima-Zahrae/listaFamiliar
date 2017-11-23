@@ -35,6 +35,40 @@ module.exports = function(ListaFamiliar) {
 
     });
     
-};
+            /**
+         * metodo remoto para crear las solicitudes
+         * @param {object} context el argumento del context
+         * @param {Function(Error, object)} callback
+         */
+
+        ListaFamiliar.prototype.solicitar = function(contexto, callback) {          
+          //var Usuario = ListaFamiliar.app.models.Usuario;
+          //var UsuarioAutenti = Usuario.id;
+          
+                    //obtengo el id del this , es el objeto k recibo
+                    var listafamiID = this.id;
+                    console.log(listafamiID);
+                    
+                    //el id del usuario lo cogo del acces token 
+                    var IdUsuario = contexto.req.accessToken.userId;
+                    console.log(IdUsuario);
+                    
+                    ListaFamiliar.solicitudes.add(IdUsuario,
+			function(err) {
+				if(err) callback(err);
+				solicitud = {
+					listaFamiliarId: listafamiID,
+					usuarioId: IdUsuario
+				}
+                    callback(null, solicitud);
+                    
+                      });  
+                    
+                next();
+                
+                //al terminar hago in post de usuario y un login y despues acl a lista familiar
+
+ };
+ };
 
 //para comprobar hacemos un post en listafamiliar
