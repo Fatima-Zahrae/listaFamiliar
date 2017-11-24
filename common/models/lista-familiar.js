@@ -48,9 +48,7 @@ module.exports = function(ListaFamiliar) {
                     //obtengo el id del this , es el objeto k recibo
                     var listafamiID = this.id;
                     console.log(listafamiID);
-                    
-                    //el id del usuario lo cogo del acces token 
-                    var IdUsuario = contexto.req.accessToken.userId;
+                 
                     console.log(IdUsuario);
                     
                     ListaFamiliar.solicitudes.add(IdUsuario,

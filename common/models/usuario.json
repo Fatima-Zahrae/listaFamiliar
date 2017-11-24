@@ -47,5 +47,34 @@
       "property": "create"
     }
   ],
-  "methods": {}
+  "methods": {
+    "prototype.aceptarSolicitud": {
+      "accepts": [
+        {
+          "arg": "contexto",
+          "type": "object",
+          "required": true,
+          "description": "id del usuario autenticado",
+          "http": {
+            "source": "context"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "solicitudAprobada",
+          "type": "object",
+          "root": true,
+          "description": "nos devuelve la solicitud aprobada con los datos necesarios"
+        }
+      ],
+      "description": "metodo para aceptar la solicitud",
+      "http": [
+        {
+          "path": "/aceptarSolicitud",
+          "verb": "put"
+        }
+      ]
+    }
+  }
 }
