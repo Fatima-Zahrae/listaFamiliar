@@ -47,5 +47,34 @@
       "property": "create"
     }
   ],
-  "methods": {}
+  "methods": {
+    "prototype.AceptarSolicitudes": {
+      "accepts": [
+        {
+          "arg": "contexto",
+          "type": "object",
+          "required": true,
+          "description": "almacenar el objeto o instancia del id de usuario",
+          "http": {
+            "source": "context"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "solicitudAprobada",
+          "type": "object",
+          "root": true,
+          "description": "no devuelve la solicitud con los datos necesario"
+        }
+      ],
+      "description": "metodo para aceptar la solicitud",
+      "http": [
+        {
+          "path": "/aceptarSolicitud",
+          "verb": "put"
+        }
+      ]
+    }
+  }
 }
