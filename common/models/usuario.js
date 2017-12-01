@@ -1,68 +1,89 @@
 'use strict';
 
 module.exports = function (Usuario) {
-    /**
+    
+     /**
      * metodo para aceptar la solicitud
      * @param {object} idUsuarioAutenticado almacenar el objeto o instancia del id de usuario
      * @param {Function(Error, object)} callback
      */
 
-   Usuario.prototype.AceptarSolicitudes = function (contexto, callback) {
+    Usuario.prototype.AceptarSolicitudes = function (contexto, callback) {
         var solicitudAprobada
         var arrayUsuarios;
 
         // accedo al modelo de lista familiar atraves del modelo usuario.
-        var ListaFamiliar = Usuario.app.models.ListaFamiliar;
+        var listafamiliar = Usuario.app.models.ListaFamiliar;
 
         //obtengo el id del usuario autenticado 
         var idUsuario = contexto.req.accessToken.userId
         var usuarioSolicitante = this;
+//callback(new Error("rrrrrrrrrrrrrrrrrrrr"));
 
         // necesito obtener el id de lista familiar atraves del id de usuaio autenticado 
-
         Usuario.findById(idUsuario, function (err, objetoUsuarioLogeado) {
-            if (err) //{
+            if (err)
                 callback(err);
             //} else {
-                var idLista = objetoUsuarioLogeado.listaFamiliarId;
+            var idLista = objetoUsuarioLogeado.listaFamiliarId;
 
-                		Usuario.find({
-					where: {
-						listaFamiliarId: idLista
-					}
-				},
-				
-				function(err, arrayUsuarios) {
-					if (err) callback(err);
-                                        
-					// Saber si El solicitante ha realizado alguna solicitud a la lista del usuarioAutenticado()
-					usuarioSolicitante.solicitudes.findById(objetoUsuarioLogeado.listaFamiliarId, function(err, listaFamiliar) {
-                                            
-						// Si no se encuentra la relación entre el usuario solicitante y la listafamiliar devuelve un error 
-						if (err) callback(err);
+            //accedo al modelo lista con el (idLista) para obtener una instancia completa del modelo de la lista
+            listafamiliar.findById(idLista, function (err, listacompleta) {
+                if (err)
+                    callback(err);
 
-						// asociar la listaFamiliar del autenticado al solicitante
-						usuarioSolicitante.listaFamiliarId = objetoUsuarioLogeado.listaFamiliarId;
+                //atraves de los datos k tengo de la lista completa accedo al modelo  solicitudes  y busco el objeto completo de del usuario obtenido del modelo listaFamiliar
+                // y lo guardo en ObjetoUsuarioSolicitante
+                listacompleta.solicitudes.findById(usuarioSolicitante.id, function (err, ObjetoUsuarioSolicitante) {
+                    if (err)
+                        callback(new Error("no existe relacion del usuario co la lista"));
+                        console.log(ObjetoUsuarioSolicitante);
+                        console.log(idLista);
+                        //asigno el id de lista del autenticado al slicitante
+                        ObjetoUsuarioSolicitante.listaFamiliarId = idLista;
 
-						// Guardamos los cambios del usuarioSolicitante
-						usuarioSolicitante.save(function(err, usuarioSolicitante) {
-							
-							// Añadimos al usuario al array de usuarios de la listaFamiliar para devolverlo posteriormente
-							arrayUsuarios.push(usuarioSolicitante);
 
-							if (err) callback(err);
+                    //guardo los cambios del usuarioSolicitante actualizado
+                    ObjetoUsuarioSolicitante.save();
 
-							//borramos la solicitud
-							usuarioSolicitante.solicitudes.remove(listaFamiliar, function(err) {
-								if (err) callback(err);
-								callback(null, arrayUsuarios);
-							})
-						})
-                                        })
-				}
-			);
-		})
-            
+                    //borramos la solicitud
+                    listacompleta.solicitudes.remove(ObjetoUsuarioSolicitante, function (err) {
+                        //hacemos un find de los usuarios con el mismo idListaFamiliar del autenticado y devolvemos el array
+                        Usuario.find({
+                            where: {
+                                listaFamiliarId: idLista
+                            }
+                        },
+                                function (err, arrayUsuarios) {
+                                    if (err)callback(err);
+
+                                    callback(null, arrayUsuarios);
+
+                                }
+                        );
+                    });
+
+                });
+
+            });
+
+
+        });
+
     };
-    
+
+
+    /**
+     * este es ek¡l metodo para rechazar la solicitud del usuario solicitante
+     * @param {object} context contexto
+     * @param {Function(Error, object)} callback
+     */
+
+    Usuario.prototype.rechazarSolicitud = function (context, callback) {
+        var arraydeUsuarios;
+        var IdAutenticado = context.req.access.Token;
+
+        callback(null, arraydeUsuarios);
+    };
+
 };
