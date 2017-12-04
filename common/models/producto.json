@@ -29,7 +29,43 @@
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "limpiarLista"
     }
   ],
-  "methods": {}
+  "methods": {
+    "limpiarLista": {
+      "accepts": [
+        {
+          "arg": "contexto",
+          "type": "object",
+          "required": true,
+          "description": "contexto",
+          "http": {
+            "source": "context"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "arrayProductos",
+          "type": "array",
+          "root": true,
+          "description": "array usuarios"
+        }
+      ],
+      "description": "metodo de limpiar lista",
+      "http": [
+        {
+          "path": "/limpiarLista",
+          "verb": "put"
+        }
+      ]
+    }
+  }
 }
