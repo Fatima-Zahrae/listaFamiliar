@@ -18,7 +18,6 @@ module.exports = function (Usuario) {
         //obtengo el id del usuario autenticado 
         var idUsuario = contexto.req.accessToken.userId
         var usuarioSolicitante = this;
-//callback(new Error("rrrrrrrrrrrrrrrrrrrr"));
 
         // necesito obtener el id de lista familiar atraves del id de usuaio autenticado 
         Usuario.findById(idUsuario, function (err, objetoUsuarioLogeado) {
@@ -68,6 +67,63 @@ module.exports = function (Usuario) {
             });
 
 
+        });
+
+    };
+
+
+    /**
+     * metodo de rechazar solcitudes
+     * @param {object} contexto contexto del metodo
+     * @param {Function(Error, array)} callback
+     */
+
+    Usuario.prototype.rechazarSolicitudes = function (contexto, callback) {
+        var arrayUsuarios;
+        
+        var listaFamiliar = Usuario.app.models.ListaFamiliar;
+        
+        //saber el id del usuario autenticado
+        var idUsuarioautenticado = contexto.req.accessToken.userId
+        
+        //objeto del usuario solicitante
+        var usuarioSolicitante = this;
+        
+        //obtengo el IdListaFamiliar del UsuarioAutenticado
+        Usuario.findById(idUsuarioautenticado, function (err, objetoUsuarioAutenticado){
+            if(err)callback(err);
+            
+            var idListaAutenticado = objetoUsuarioAutenticado.listaFamiliarId;
+            
+            //accedo al modelo de la lista Familiar con el idlistaFamiliar del autenteicado y me devuelve una instancia de listaFamiliar
+            listaFamiliar.findById(idListaAutenticado, function (err, listaCompleta){
+                if(err)callback(err);
+             
+            //accedo al modelo solicitudes con el objeto de listaCompleta     
+                listaCompleta.solcitudes.findById(usuarioSolicitante.id, function (err ,ObjetoUserSolic){
+                    if(err)callback(err);
+                        
+                    
+                        listaCompleta.solicitudes.remove(ObjetoUserSolic, function (err) {
+                        //hacemos un find de los usuarios con el mismo idListaFamiliar del autenticado y devolvemos el array
+                        Usuario.find({
+                            where: {
+                                listaFamiliarId: idListaAutenticado
+                            }
+                        },
+                                function (err, arrayUsuarios) {
+                                    if (err)callback(err);
+
+                                    callback(null, arrayUsuarios);
+
+                                }
+                        );
+                    });
+                    
+                });
+            });
+            
+            
         });
 
     };

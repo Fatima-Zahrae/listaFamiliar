@@ -82,6 +82,34 @@
           "verb": "put"
         }
       ]
+    },
+    "prototype.rechazarSolicitudes": {
+      "accepts": [
+        {
+          "arg": "contexto",
+          "type": "object",
+          "required": true,
+          "description": "contexto del metodo",
+          "http": {
+            "source": "context"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "arrayUsuarios",
+          "type": "array",
+          "root": false,
+          "description": "array de los usuario que se les rechaza la lista"
+        }
+      ],
+      "description": "metodo de rechazar solcitudes",
+      "http": [
+        {
+          "path": "/rechazarSolicitudes",
+          "verb": "delete"
+        }
+      ]
     }
   }
 }
