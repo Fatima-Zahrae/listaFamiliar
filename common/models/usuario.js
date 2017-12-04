@@ -100,7 +100,7 @@ module.exports = function (Usuario) {
                 if(err)callback(err);
              
             //accedo al modelo solicitudes con el objeto de listaCompleta     
-                listaCompleta.solcitudes.findById(usuarioSolicitante.id, function (err ,ObjetoUserSolic){
+                listaCompleta.solicitudes.findById(usuarioSolicitante.id, function (err ,ObjetoUserSolic){
                     if(err)callback(err);
                         
                     
