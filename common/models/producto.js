@@ -18,7 +18,7 @@ Producto.limpiarLista = function(contexto, callback) {
   //hago in find de Ususarios para poder tener una instancia de usuarioCompleto
     Usuario.findById(IdAutenticado ,function(err , usuarioCompleto){
         if(err)callback(err);
-        
+        console.info(usuarioCompleto);
         //tengo el IdListaFamiliar del autenticado
         var IdlistaAuten = usuarioCompleto.listaFamiliarId;
         
