@@ -129,4 +129,5 @@ module.exports = function (Usuario) {
     };
 
 
+
 };
