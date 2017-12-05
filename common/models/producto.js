@@ -41,6 +41,32 @@ Producto.limpiarLista = function(contexto, callback) {
             });
     });
 };
+    /**
+ * metodo de comprado
+ * @param {object} contrxto contrxto
+ * @param {Function(Error, array)} callback
+ */
+
+Producto.prototype.comprado = function(contexto, callback) {
+  var arrayProductos;
+            //necesito saber el producto
+        var productoCompleto = this;
+    //temgo el id del usuario autenticado
+    var IdAutenticado = contexto.req.accessToken.userId;
+
+            productoCompleto.comprar = !productoCompleto.comprar;
+            productoCompleto.save(function (err, producto) {
+          if (err) callback(err);
+          callback(null, producto);
+        });
+
+
+    
+ 
+
+};
+
+
 
 
 };
